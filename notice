@@ -1,0 +1,27 @@
+登陆连接-获取cookie https://wiki.xxxxx.com/login.action
+# 登录到confluence服务器所在机器,找到配置文件
+more /var/atlassian/application-data/confluence/confluence.cfg.xml
+# <property name="hibernate.connection.password">password</property>
+# <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/confluence</property>
+# <property name="hibernate.connection.username">root</property>
+
+查询出来并保存 select CONTENTID,TITLE from CONTENT where CONTENTTYPE = 'PAGE' and PREVVER is null and CONTENT_STATUS = 'current';
+格式： ID TITLE
+
+使用脚本循环导出
+
+##################################################
+#!/bin/bash
+#rm -rf cookie.txt
+#认证获取cookie
+#wget --post-data="os_username=root&os_password=xxxxxxxxxxxx&login=%E7%99%BB%E5%BD%95" --save-cookies=cookie.txt --keep-session-cookies  https://wiki.xxxxxxxx.com/dologin.action
+#循环数据库导出的PAGEID文件wiki.log
+#for PAGEID in `cat wiki.log|awk '{print$1}'`
+#do
+#TITLE=`cat wiki.log|grep $PAGEID|awk '{print$2}'`
+#curl -c cookie.txt -b cookie.txt -H"Accept-Encoding: gzip, deflate, br" "https://wiki.9fprivate.com/exportword?pageId=${PAGEID}" > wiki/${TITLE}.doc
+#done
+#
+#rm -rf  dologin.action
+#
+最后会下载到当前目录下的wiki内
